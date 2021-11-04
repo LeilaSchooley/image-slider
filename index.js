@@ -1,16 +1,32 @@
-function initializeGallery(imageNumber) {
+function initializeGallery() {
+  let firstGalleryImage = document.getElementById("image-one");
+  firstGalleryImage.classList.add("current");
+}
+function toggleHiddenClass() {
   let allGalleryImages = document.querySelectorAll(".gallery");
-  allGalleryImages.forEach((element, index) => {
-    if (index !== imageNumber) {
-      element.classList.toggle("hidden");
+  allGalleryImages.forEach((element) => {
+    if (element.className == "gallery hidden") {
+      element.classList.remove("hidden");
     }
   });
 }
-function removeClass() {
+
+function changeImage(imageIndex) {
   let allGalleryImages = document.querySelectorAll(".gallery");
-  allGalleryImages.forEach((element, index) =>
-    element.parentNode.removeChild(element)
-  );
+  allGalleryImages.forEach((element, index) => {
+    if (index === imageIndex) {
+      element.classList.add("current");
+      detectCurrentImage();
+    }
+  });
+}
+function detectCurrentImage() {
+  let allGalleryImages = document.querySelectorAll(".gallery");
+  allGalleryImages.forEach((element) => {
+    if (element.className != "gallery current") {
+      element.classList.add("hidden");
+    }
+  });
 }
 
 function getNextImage() {
@@ -22,16 +38,16 @@ function getNextImage() {
 
 function getIndexOfCurrentImage() {
   let allGalleryImages = document.querySelectorAll(".gallery");
-  allGalleryImages.forEach((element, index) => {
-    if (element.className != "gallery hidden") {
-      let newImageIndex = index + parseInt(1);
-      console.log(newImageIndex);
-      removeClass();
+  for (let i = 0; i < allGalleryImages.length; i++) {
+    if (allGalleryImages[i].className != "gallery hidden") {
+      let newImageIndex = i + parseInt(1);
 
-      initializeGallery(newImageIndex);
+      toggleHiddenClass();
+      changeImage(newImageIndex);
     }
-  });
+  }
 }
 
-initializeGallery(1);
+initializeGallery();
+detectCurrentImage();
 getNextImage();
