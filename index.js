@@ -1,53 +1,31 @@
+let current = 0;
+let galleryImages = document.querySelectorAll(".gallery");
+
 function initializeGallery() {
+  resetAllImages();
   let firstGalleryImage = document.getElementById("image-one");
-  firstGalleryImage.classList.add("current");
-}
-function toggleHiddenClass() {
-  let allGalleryImages = document.querySelectorAll(".gallery");
-  allGalleryImages.forEach((element) => {
-    if (element.className == "gallery hidden") {
-      element.classList.remove("hidden");
-    }
-  });
+  firstGalleryImage.style.display = "block";
 }
 
-function changeImage(imageIndex) {
-  let allGalleryImages = document.querySelectorAll(".gallery");
-  allGalleryImages.forEach((element, index) => {
-    if (index === imageIndex) {
-      element.classList.add("current");
-      detectCurrentImage();
-    }
-  });
-}
-function detectCurrentImage() {
-  let allGalleryImages = document.querySelectorAll(".gallery");
-  allGalleryImages.forEach((element) => {
-    if (element.className != "gallery current") {
-      element.classList.add("hidden");
-    }
-  });
+function resetAllImages() {
+  galleryImages.forEach((element) => (element.style.display = "none"));
 }
 
-function getNextImage() {
-  let nextButton = document.getElementById("next");
-  nextButton.addEventListener("click", () => {
-    getIndexOfCurrentImage();
-  });
-}
-
-function getIndexOfCurrentImage() {
-  let allGalleryImages = document.querySelectorAll(".gallery");
-  for (let i = 0; i < allGalleryImages.length; i++) {
-    if (allGalleryImages[i].className != "gallery hidden") {
-      let newImageIndex = i + parseInt(1);
-
-      toggleHiddenClass();
-      changeImage(newImageIndex);
-    }
+let previousButton = document.getElementById("previous");
+previousButton.addEventListener("click", () => {
+  resetAllImages();
+  if (current === 0) {
+    current = galleryImages.length;
   }
-}
+  galleryImages[current - 1].style.display = "block";
+});
+let nextButton = document.getElementById("next");
+nextButton.addEventListener("click", () => {
+  resetAllImages();
+  if (current === galleryImages.length - 1) {
+    current = -1;
+  }
+  galleryImages[current + 1].style.display = "block";
+});
 
 initializeGallery();
-detectCurrentImage();
-getNextImage();
